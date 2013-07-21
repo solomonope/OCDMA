@@ -1,0 +1,27 @@
+%Author:     Folorunsho Solomon Opeyemi(1148183)
+%Company:    The University Of Birmingham
+%Project
+%CodeFileName:OocBer.m    
+%Description:This file contains all System parameters to the used by
+
+
+%K = Code Weight
+%L = Code Length
+%M = Number of Interfering users
+function [BER] = OocBer(K,L,M)
+
+PEL = 1;
+%initialise BER ARRAY
+BER = zeros(1,1);
+
+% q = K^2/2*L
+q = power(K,2) / (2 * L);
+
+for i = 0:1:M
+  Temp  =   power(q,i)* power((1-q),(M-i))* PEL;
+   BER((i+1)) = 
+end
+  %plot test
+  
+  plot(BER);
+end

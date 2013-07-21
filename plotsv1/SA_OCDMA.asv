@@ -1,0 +1,131 @@
+%Author:     Folorunsho Solomon Opeyemi(1148183)
+%Company:    The University Of Birmingham
+%Project:
+%CodeFileName:BppmBer.m    
+%Description:This file contains all System parameters to the used by
+function [] = SA_OCDMA()
+
+dv = 2.5e12;
+
+B = 80e6;
+
+
+%MFH Parameters
+ MFH_q = 16;
+ 
+ %MQC Parameters
+ MQC_P =  13;
+ 
+ 
+ %BIBD Parameters
+ BIBD_m = 3;
+ BIBD_q = 16;
+ 
+ 
+ 
+ BERA_MFH = 0;
+ BERA_MQC = 0;
+ BERA_BIBD = 0;
+ BERA_HDM = 0;
+ ind = 0;
+ KA = 0:50:250;
+ for K = KA
+     ind = ind+1;
+     
+     %MFH
+                %MFHBSNR(dv,q,B, K)
+     SNR_MFH =  MFHBSNR(dv,MFH_q,B,K);
+     BERA_MFH(ind) = Compute_BER(SNR_MFH);
+     
+     
+     %MCQ
+                %MQCSNR(dv,q,B, K)
+     SNR_MQC =  MQCSNR(dv,MQC_P,B,K);
+     BERA_MQC(ind) = Compute_BER(SNR_MQC);
+     
+     
+     %BIBD
+                        %(dv,q,B, K,m)
+     SNR_BIBD =  BIBDSNR(dv,BIBD_q,B,K,BIBD_m);
+     BERA_BIBD(ind) = Compute_BER(SNR_BIBD );
+     
+     %HDM
+     SNR_HDM = HDMSNR(dv,B,256,K);
+    BERA_HDM(ind) = Compute_BER(SNR_HDM);
+ end
+ 
+ clf;
+ semilogy(KA, BERA_MFH,'r');
+ hold on ;
+ 
+ semilogy(KA, BERA_MQC,'g-.');
+ hold on ;
+ 
+ 
+ semilogy(KA, BERA_BIBD,'b-.');
+ hold on ;
+ 
+ semilogy(KA, BERA_HDM,'y-.');
+ hold on ;
+ 
+ grid on;
+end
+
+
+function[SNR] = Compute_SNR(DV,B,K,W,CC)
+
+  NUMR = DV *(W - CC);
+ 
+ DMR = B*K*CC*(K + ((W-2 *CC) / CC) );
+ 
+ SNR = NUMR/ DMR;
+end
+
+
+function [BER] = Compute_BER(SNR)
+
+
+BER = 0.5 * erfc( sqrt((SNR/8) ) );
+
+
+end
+
+function [SNR] =  MFHBSNR(dv,q,B, K)
+
+W = q+1;
+
+CC = 1;
+
+SNR = Compute_SNR(dv,B,K,W,CC);
+
+end
+
+function[SNR]  =  MQCSNR(dv,P,B, K)
+
+W = P+ 1;
+
+CC = 1;
+
+
+SNR = Compute_SNR(dv,B,K,W,CC);
+end
+
+function [SNR] = BIBDSNR(dv,q,B, K,m)
+
+W = (power(q, m) - 1 ) / (q-1);
+CC= (power(q, (m-1)) -1 ) / (q-1);
+
+SNR = Compute_SNR(dv,B,K,W,CC);
+end
+
+function[SNR] = HDMSNR(dv,B,N,K)
+
+W = power(2,N-1);
+CC= power(2,N-1);
+
+SNR = Compute_SNR(dv,B,K,W,CC);
+
+end
+
+
+function[SNR] 

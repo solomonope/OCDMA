@@ -1,0 +1,25 @@
+function UsersAndPrimeNumbers(PrimeNumbers)
+
+ArrayLength = length(PrimeNumbers);
+NumberOfUsersArray = zeros(1,ArrayLength);
+for i = 1:1:ArrayLength
+  NumberOfUsersArray(i) = GetNumberOfUsers( PrimeNumbers(i) );
+end;
+
+%Plot
+xlabel('Prime Number')
+ylabel('Number of Users')
+plot(PrimeNumbers,NumberOfUsersArray );
+end
+
+
+function [NumberOfUsers] =  GetNumberOfUsers(PrimeNumber)
+
+if(length(PrimeNumber) > 1)
+    NumberOfUsers = 0;
+else
+    NumberOfUsers = PrimeNumber;
+end
+ 
+
+end
