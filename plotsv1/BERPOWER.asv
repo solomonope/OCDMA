@@ -1,3 +1,8 @@
+%Author:     Folorunsho Solomon Opeyemi(1148183)
+%Company:    The University Of Birmingham
+%Project:
+%CodeFileName:BERPOWER.m    
+%Description:This file contains all System parameters to the used by
 function [] =  BERPOWER()
 grid on;
 P = 5;
@@ -32,7 +37,7 @@ for PWR = PWRA
     ind = ind +1;
     BERA(ind) = normcdf((PWR/Noise),0,1);
 end
-semilogy(PWRA, BERA,'b)
+semilogy(PWRA, BERA,'b')
 
 hold on
 
@@ -51,11 +56,11 @@ for PWR = PWRA
     ind = ind +1;
     BERA(ind) = normcdf((PWR/Noise),0,1);
 end
-semilogy(PWRA, BERA)
+semilogy(PWRA, BERA,'g')
 
-xlabel('Transmitted Power');
+ xlabel('Transmitted Power');
  ylabel('Bit ErrorRate(BER)');
- legend('r MFH','g MQC','b BIBD','y HDM','c MDW');
+ legend('r 3 Users','b 5 Users','g 7 Users');
  hold on ;
  grid on;
 end
